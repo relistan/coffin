@@ -29,7 +29,7 @@ class CloudFormationTemplateContext
         Distribution: null
       CloudWatch:
         Alarm: null
-      DynamoDB: null
+      DynamoDB:
         Table: null
       EC2:
         CustomerGateway: null
@@ -82,11 +82,11 @@ class CloudFormationTemplateContext
       Route53:
         RecordSet: null
         RecordSetGroup: null
-      SDB: null
-        Domain: null
       S3:
         Bucket: null
         BucketPolicy: null
+      SDB:
+        Domain: null
       SNS:
         Topic: null
         TopicPolicy: null
