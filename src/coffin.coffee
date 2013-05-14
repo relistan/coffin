@@ -71,6 +71,7 @@ class CloudFormationTemplateContext
         Group: null
         InstanceProfile: null
         Policy: null
+        Role: null
         User: null
         UserToGroupAddition: null
       RDS:
@@ -180,7 +181,7 @@ class CloudFormationTemplateContext
   Region: Ref: 'AWS::Region'
   StackName: Ref: 'AWS::StackName'
   InitScript: (arg) ->
-    if not path.existsSync(arg)
+    if not fs.existsSync(arg)
       text = arg
     else
       text = fs.readFileSync(arg).toString()

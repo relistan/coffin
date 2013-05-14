@@ -26,16 +26,13 @@ validateArgs = ->
     process.stdout.write commander.helpInformation()
     process.exit 0
 
-compileTemplate = (source, params, callback) =>
+compileTemplate = (source, callback) =>
   pre = "require('../lib/coffin') ->\n"
   fs.readFile source, (err, code) =>
     if err
       console.error "#{source} not found"
       process.exit 1
     tabbedLines = []
-    if !params?
-      params = []
-    tabbedLines.push "  @ARGV = #{JSON.stringify params}"
     (tabbedLines.push('  ' + line) for line in code.toString().split '\n')
     tabbedLines.push '  return'
     code = tabbedLines.join '\n'
@@ -63,7 +60,7 @@ writeJsonTemplate = (json, templatePath, callback) ->
         process.exit 1
       callback?()
   base = path.dirname templatePath
-  path.exists base, (exists) ->
+  fs.exists base, (exists) ->
     if exists then write() else exec "mkdir -p #{base}", write
 
 generateTempFileName = ->
@@ -114,7 +111,7 @@ updateOrCreateStack = (name, templatePath, compiled, callback) =>
   updateExec.stderr.on 'data', (data) -> updateErrorText += data.toString()
   updateExec.stdout.on 'data', (data) -> resultText += data.toString()
   updateExec.on 'exit', (code) ->
-    existsSyncFunc = if fs.existsSync? then fs.existsSync else path.existsSync
+    existsSyncFunc = if fs.existsSync? then fs.existsSync
     if existsSyncFunc "#{buildCfnPath()}/cfn-update-stack"
       if code is 0
         process.stdout.write "stack '#{name}' (updated) #{checkChar}\n"
@@ -167,16 +164,16 @@ commander.option pretty.switch, pretty.text
 
 printCommand = commander.command 'print [template]'
 printCommand.description 'Print the compiled template.'
-printCommand.action (template, params...) ->
+printCommand.action (template) ->
   validateArgs()
-  compileTemplate template, params, (compiled) ->
+  compileTemplate template, (compiled) ->
     console.log compiled
 
 validateCommand = commander.command 'validate [template]'
 validateCommand.description 'Validate the compiled template. Either an AWS_CLOUDFORMATION_HOME environment variable or a --cfn-home switch is required.'
-validateCommand.action (template, params...) ->
+validateCommand.action (template) ->
   validateArgs()
-  compileTemplate template, params, (compiled) ->
+  compileTemplate template, (compiled) ->
     process.stdout.write "#{coffinChar} #{template} "
     tempFileName = generateTempFileName()
     writeJsonTemplate compiled, tempFileName, ->
@@ -184,9 +181,9 @@ validateCommand.action (template, params...) ->
 
 stackCommand = commander.command 'stack [name] [template]'
 stackCommand.description 'Create or update the named stack using the compiled template. Either an AWS_CLOUDFORMATION_HOME environment variable or a --cfn-home switch is required.'
-stackCommand.action (name, template, params...) ->
+stackCommand.action (name, template) ->
   validateArgs()
-  compileTemplate template, params, (compiled) ->
+  compileTemplate template, (compiled) ->
     tempFileName = generateTempFileName()
     writeJsonTemplate compiled, tempFileName, ->
       process.stdout.write "#{coffinChar} #{template} -> "
@@ -194,9 +191,9 @@ stackCommand.action (name, template, params...) ->
 
 compileCommand = commander.command 'compile [template]'
 compileCommand.description 'Compile and write the template. The output file will have the same name as the coffin template plus a shiny new ".template" extension.'
-compileCommand.action (template, params...) ->
+compileCommand.action (template) ->
   validateArgs()
-  compileTemplate template, params, (compiled) ->
+  compileTemplate template, (compiled) ->
     process.stdout.write "#{coffinChar} #{template} -> "
     fileName = generateOutputFileName template, ".template"
     writeJsonTemplate compiled, fileName, ->

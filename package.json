@@ -8,12 +8,12 @@
   "homepage":     "http://chrisfjones.github.com/coffin",
   "repositories": [
        {
-            "type": "git", 
+            "type": "git",
             "url": "git@github.com:chrisfjones/coffin.git"
        }
   ],
   "bugs": {
-       "url": "http://github.com/chrisfjones/coffin/issues" 
+       "url": "http://github.com/chrisfjones/coffin/issues"
   },
   "engines":      {
     "node":       ">=0.4.0"
@@ -30,9 +30,9 @@
    },
   "dependencies": {
       "coffee-script":  "1.1.x",
-      "commander":      "0.4.x",
-      "pkginfo":        "0.2.x",
-      "colors":         "0.5.x"
+      "commander":      "1.1.x",
+      "pkginfo":        "0.3.x",
+      "colors":         "0.6.x"
   },
   "devDependencies": {
     "vows": "0.5.x"
