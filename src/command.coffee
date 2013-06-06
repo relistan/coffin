@@ -105,6 +105,9 @@ updateOrCreateStack = (name, templatePath, compiled, callback) =>
   if commandHelper.doesTemplateReferenceIAM compiled
     args.push '-c'
     args.push 'CAPABILITY_IAM'
+  if commander.parameters?
+    args.push '--parameters'
+    args.push commander.parameters
   updateExec = spawn "#{buildCfnPath()}/cfn-update-stack", args
   updateErrorText = ''
   resultText = ''
@@ -134,6 +137,9 @@ createStack = (name, templatePath, compiled, callback) =>
   if commandHelper.doesTemplateReferenceIAM compiled
     args.push '-c'
     args.push 'CAPABILITY_IAM'
+  if commander.parameters?
+    args.push '--parameters'
+    args.push commander.parameters
   createExec = spawn "#{buildCfnPath()}/cfn-create-stack", args
   errorText = ''
   resultText = ''
@@ -161,6 +167,7 @@ commander.usage '[options] <coffin template>'
 commander.option '-o, --output [dir]', 'Directory to output compiled file(s) to'
 commander.option '--cfn-home [dir]', 'The home of your AWS Cloudformation tools. Defaults to your AWS_CLOUDFORMATION_HOME environment variable.'
 commander.option pretty.switch, pretty.text
+commander.option '-P, --parameters [dir]', "Parameters to overide Parameter defaults."
 
 printCommand = commander.command 'print [template]'
 printCommand.description 'Print the compiled template.'
