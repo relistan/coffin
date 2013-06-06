@@ -1,6 +1,6 @@
 {
-  "name":         "coffin",
-  "version":      "0.3.0-rkive",
+  "name":         "coffin-rkive",
+  "version":      "0.3.0",
   "description":  "Coffee dsl for aws cloudformation",
   "keywords":     ["coffeescript", "coffee-script", "aws", "cloudformation"],
   "author":       "Chris Jones <chris.f.jones@gmail.com> (https://github.com/chrisfjones/)",
@@ -9,14 +9,14 @@
   "repositories": [
        {
             "type": "git",
-            "url": "git@github.com:chrisfjones/coffin.git"
+            "url": "git@github.com:rkive/coffin.git"
        }
   ],
   "bugs": {
-       "url": "http://github.com/chrisfjones/coffin/issues"
+       "url": "http://github.com/rkive/coffin/issues"
   },
   "engines":      {
-    "node":       ">=0.4.0"
+    "node":       ">=0.8.0"
   },
   "directories" : {
     "lib" : "./lib"
