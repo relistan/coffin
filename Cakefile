@@ -1,7 +1,9 @@
 {spawn, exec} = require 'child_process'
+fs = require 'fs'
 log = console.log
 
 task 'build', ->
+  fs.mkdir 'lib', 0o0755
   run 'coffee -o lib -c src/*.coffee'
 
 task 'test', ->
@@ -11,10 +13,14 @@ task 'clean', ->
   run 'npm remove -g coffin'
 
 task 'install', ->
+  invoke 'build'
   run 'npm install -g .'
 
 task 'all', ->
-  run 'cake clean; cake test; cake build; cake install'
+  invoke 'clean'
+  invoke 'test'
+  invoke 'build'
+  invoke 'install'
 
 run = (args...) ->
   for a in args
