@@ -187,7 +187,7 @@ class CloudFormationTemplateContext
       if arg and arg[0..1] == '#!'
         text = arg
       else
-        throw new Error("InitScript was provided that was not a script string and is not a file: --#{arg}--")
+        throw new Error("InitScript was provided that was not a script string and is not a file: '#{arg}'")
     chunks = []
     #todo: fix this abhoration of regex
     pattern = /((.|\n)*?)%{([^}?]+)}?((.|\n)*)/
