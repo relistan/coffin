@@ -2,8 +2,8 @@ vows          = require 'vows'
 assert        = require 'assert'
 fs            = require 'fs'
 path          = require 'path'
-coffin        = require '../lib/coffin'
-commandHelper = require '../lib/commandHelper'
+coffin        = require '../src/coffin'
+commandHelper = require '../src/commandHelper'
 
 @assertListsEqual = (actualList, expectedList) ->
   assert.equal actualList.length, expectedList.length
@@ -161,6 +161,14 @@ echo "hey %{@Region}"
       assert.equal topic.Resources.b.Properties.UserData["Fn::Base64"]["Fn::Join"][1][2], "\necho "
       assert.equal topic.Resources.b.Properties.UserData["Fn::Base64"]["Fn::Join"][1][3].Ref, 'AWS::Region'
       assert.equal topic.Resources.b.Properties.UserData["Fn::Base64"]["Fn::Join"][1][4], "\necho \"ho\"\n"
+
+    'we get a nice error': (topic) ->
+      badCall = -> coffin ->
+        environment = 'test'
+        @AWS.EC2.Instance 'a',
+          UserData: @InitScript '/foo.sh'
+
+      assert.throws(badCall, Error, /InitScript was provided that was not a script/)
 
   'when creating a stack':
     topic: ->

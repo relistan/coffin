@@ -181,10 +181,13 @@ class CloudFormationTemplateContext
   Region: Ref: 'AWS::Region'
   StackName: Ref: 'AWS::StackName'
   InitScript: (arg) ->
-    if not fs.existsSync(arg)
-      text = arg
-    else
+    if fs.existsSync(arg)
       text = fs.readFileSync(arg).toString()
+    else
+      if arg and arg[0..1] == '#!'
+        text = arg
+      else
+        throw new Error("InitScript was provided that was not a script string and is not a file: --#{arg}--")
     chunks = []
     #todo: fix this abhoration of regex
     pattern = /((.|\n)*?)%{([^}?]+)}?((.|\n)*)/

@@ -24,10 +24,15 @@ validateArgs = ->
       valid = false
   if not valid
     process.stdout.write commander.helpInformation()
-    process.exit 0
+    process.exit 1
 
 compileTemplate = (source, callback) =>
   pre = "require('../lib/coffin') ->\n"
+
+  unless fs.exists(source)
+    process.stdout.write('You must provide a filename to compile!')
+    process.exit 2
+
   fs.readFile source, (err, code) =>
     if err
       console.error "#{source} not found"
