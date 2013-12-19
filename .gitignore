@@ -12,3 +12,5 @@ tmp*
 
 *.iml
 .idea/
+*.swp
+*.swo
