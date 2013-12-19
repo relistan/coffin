@@ -26,10 +26,11 @@
     "coffin":     "./bin/coffin"
   },
   "scripts": {
-     "test": "(cd test; coffee templateTests.coffee)"
-   },
+    "test": "test -d node_modules && ./node_modules/.bin/cake test || cake test",
+    "install": "test -d node_modules && ./node_modules/.bin/cake build || cake build"
+  },
   "dependencies": {
-      "coffee-script":  "1.1.x",
+      "coffee-script":  "1.6.x",
       "commander":      "1.1.x",
       "pkginfo":        "0.3.x",
       "colors":         "0.6.x"

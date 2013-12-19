@@ -3,7 +3,7 @@ fs = require 'fs'
 log = console.log
 
 task 'build', ->
-  fs.mkdir 'lib', 0o0755
+  fs.mkdir('lib', 0o0755) unless fs.exists 'lib'
   run 'coffee -o lib -c src/*.coffee'
 
 task 'test', ->
