@@ -19,6 +19,7 @@ commandHelper = require '../lib/commandHelper'
 
 suite = vows.describe 'Template Test Suite'
 suite.addBatch
+
   'when parsing WordPressTemplate.coffee':
     topic: ->
       raw = ''
@@ -46,6 +47,7 @@ suite.addBatch
     'Outputs are the same': (originalTemplate, generatedTemplate) =>
       return if originalTemplate is null or generatedTemplate is null
       @assertListsEqual generatedTemplate.Outputs, originalTemplate.Outputs
+
   'when using resource types':
     topic: ->
       coffin ->
@@ -60,6 +62,7 @@ suite.addBatch
       assert.ok topic.Resources.scalePolicy?
     'short param is good': (topic) ->
       assert.ok topic.Parameters.shortParam?
+
   'when using a blank template':
     topic: ->
       coffin ->
@@ -75,6 +78,7 @@ suite.addBatch
       assert.ok topic.Resources?
     'there is a Outputs block': (topic) ->
       assert.ok topic.Outputs?
+
   'when using mappings':
     topic: ->
       coffin ->
@@ -87,6 +91,7 @@ suite.addBatch
     'values exist': (topic) ->
       assert.equal 'ami-f417e49d', topic.Mappings.AWSRegionArch2AMI['us-east-1']['32']
       assert.equal 'ami-f617e49f', topic.Mappings.AWSRegionArch2AMI['us-east-1']['64']
+
   'when using tags':
     topic: ->
       coffin ->
@@ -97,6 +102,7 @@ suite.addBatch
       assert.equal 'someInstance', topic.Resources.instance.Properties.Tags[0].Value
       assert.equal 'Environment', topic.Resources.instance.Properties.Tags[1].Key
       assert.equal 'someEnvironment', topic.Resources.instance.Properties.Tags[1].Value
+
   'when using the join function':
     topic: ->
       myArray = ['x', 'y', 'z']
@@ -111,6 +117,7 @@ suite.addBatch
     'it works with an array arg': (topic) ->
       assert.equal topic.Resources.b.Properties.UserData['Fn::Join'][0], ''
       assert.deepEqual topic.Resources.b.Properties.UserData['Fn::Join'][1], ['x', 'y', 'z']
+
   'when using metadata and top level properties':
     topic: ->
       coffin ->
@@ -127,6 +134,7 @@ suite.addBatch
       assert.equal topic.Resources.a.Properties.a, 'b'
     'type is in the right place': (topic) ->
       assert.ok topic.Resources.a.Type is 'AWS::EC2::Instance'
+
   'when using @InitScript':
     topic: ->
       coffin ->
